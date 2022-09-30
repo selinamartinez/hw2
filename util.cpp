@@ -17,7 +17,8 @@ std::set<std::string> parseStringToWords(string rawWords)
 {
     set<string> wordList;
     std::string word = "";
-    for(char l: rawWords) {
+    std::string theword = convToLower(rawWords);
+    for(char l: theword) {
         if(!ispunct(l) && ispunct(l + 1)) {
             word = word + l;
             wordList.insert(word);

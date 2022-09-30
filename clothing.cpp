@@ -2,6 +2,7 @@
 #include <iomanip>
 #include "clothing.h"
 #include <set>
+#include "util.h"
 
 using namespace std;
 
@@ -24,9 +25,16 @@ std::set<std::string> Clothing:: keywords() const {
     set<std::string>words;
     std::string keywords[] = { size_, brand_, category_, name_ };
 
-    for(int i = 0; i < 7; i++) {
-        words.insert(keywords[i]);
+    for(int i = 0; i < 4; i++) {
+        set<std::string> more_keywords;
+        std::string the_string = convToLower(keywords[i]);
+        more_keywords = parseStringToWords(the_string);
+
+
+        //adding all the words from parseStringToWords to the overall keyword set
+        words.insert(more_keywords.begin(), more_keywords.end());
     }
+
 
     return words;
 
@@ -45,7 +53,8 @@ bool Clothing::isMatch(std::vector<std::string>&searchTerms)const
 std::string Clothing::displayString() const
 {
     std::string clothing_info;
-    clothing_info = size_ + " " + brand_ + " " + category_ + " " + name_;
+    clothing_info = name_ + "\n" + "Size: " + size_ + " " +
+                          "Brand: " + (brand_) + "\n" + std::to_string(price_) + " " + std::to_string(qty_)  + " left.";
     return clothing_info;
 }
 

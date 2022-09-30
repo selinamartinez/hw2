@@ -2,6 +2,7 @@
 #include <iomanip>
 #include "movie.h"
 #include <set>
+#include "util.h"
 
 using namespace std;
 
@@ -24,9 +25,16 @@ std::set<std::string> Movie:: keywords() const {
     set<std::string>words;
     std::string keywords[] = { genre_, rating_, category_, name_ };
 
-    for(int i = 0; i < 7; i++) {
-        words.insert(keywords[i]);
+    for(int i = 0; i < 4; i++) {
+        set<std::string> more_keywords;
+        std::string the_string = convToLower(keywords[i]);
+        more_keywords = parseStringToWords(the_string);
+
+
+        //adding all the words from parseStringToWords to the overall keyword set
+        words.insert(more_keywords.begin(), more_keywords.end());
     }
+
 
     return words;
 
@@ -40,12 +48,12 @@ bool Movie::isMatch(std::vector<std::string>&searchTerms)const
 */
 
 
-
 //Returns a string to display the product info for hits of the search
 std::string Movie::displayString() const
 {
     std::string movie_info;
-    movie_info = genre_ + " " + rating_ + " " + category_ + " " + name_;
+    movie_info = name_ + "\n" + "Genre: " + genre_ + " " +
+                          "Rating: " + (rating_) + "\n" + std::to_string(price_) + " " + std::to_string(qty_)  + " left.";
     return movie_info;
 }
 

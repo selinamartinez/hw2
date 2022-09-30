@@ -5,9 +5,10 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
-#include "product.h"
 #include "db_parser.h"
+#include "mydatastore.h"
 #include "product_parser.h"
+#include "user.h"
 #include "util.h"
 
 using namespace std;
@@ -16,6 +17,7 @@ struct ProdNameSorter {
         return (p1->getName() < p2->getName());
     }
 };
+User* findUsername(std::string username, MyDataStore& ds);
 void displayProducts(vector<Product*>& hits);
 
 int main(int argc, char* argv[])
@@ -29,8 +31,7 @@ int main(int argc, char* argv[])
      * Declare your derived DataStore object here replacing
      *  DataStore type to your derived type
      ****************/
-    DataStore ds;
-
+    MyDataStore ds;
 
 
     // Instantiate the individual section and product parsers we want
@@ -99,11 +100,29 @@ int main(int argc, char* argv[])
                 }
                 done = true;
             }
-	    /* Add support for other commands here */
-
-
-
-
+            else if ( cmd == "ADD" ) {
+                string username; 
+                ss >> username;
+                int hit_result_index;
+                ss >> hit_result_index;
+                User* newUser = new User(username, 0.0, 0);
+                ds.addUser(newUser);
+                int hits_size = hits.size();
+                if (hit_result_index >= hits_size) {
+                    std::cout << "Invalid request" << std::endl;
+                }
+            }
+	        else if ( cmd == "VIEWCART") {
+                std::string username;
+                ss >> username;
+                ds.viewCart(username);
+              
+            }
+            else if ( cmd == "BUYCART") {
+                std::string username;
+                ss >> username;
+                ds.buyCart(username);
+            }
             else {
                 cout << "Unknown command" << endl;
             }
@@ -112,6 +131,7 @@ int main(int argc, char* argv[])
     }
     return 0;
 }
+
 
 void displayProducts(vector<Product*>& hits)
 {

@@ -2,6 +2,7 @@
 #include <iomanip>
 #include "book.h"
 #include <set>
+#include "util.h"
 
 using namespace std;
 
@@ -24,9 +25,16 @@ std::set<std::string> Book:: keywords() const {
     set<std::string>words;
     std::string keywords[] = { author_, isbn_, category_, name_ };
 
-    for(int i = 0; i < 7; i++) {
-        words.insert(keywords[i]);
+    for(int i = 0; i < 4; i++) {
+        set<std::string> more_keywords;
+        std::string the_string = convToLower(keywords[i]);
+        more_keywords = parseStringToWords(the_string);
+
+
+        //adding all the words from parseStringToWords to the overall keyword set
+        words.insert(more_keywords.begin(), more_keywords.end());
     }
+
 
     return words;
 
@@ -43,7 +51,9 @@ bool Book::isMatch(std::vector<std::string>&searchTerms)const
 std::string Book::displayString() const
 {
     std::string book_info;
-    book_info = author_ + " " + isbn_ + " " + category_ + " " + name_;
+    book_info = name_ + '\n' + "Author: " + author_ + " " +
+                          "ISBN: " + isbn_ + "\n" + std::to_string(price_) + " " + std::to_string(qty_) + " left."; 
+
     return book_info;
 }
 

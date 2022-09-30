@@ -12,25 +12,40 @@
  *  in this header file (since they are templates).
  *  Both functions should run in time O(n*log(n)) and not O(n^2)
  */
+
+//if s1 is empty, copy s2 to s1
+//else add from s2 to s1 only if s1 appears in s2
+//delete from s2 if s1 doesn't have s2;
+//return s1
 template <typename T>
 std::set<T> setIntersection(std::set<T>& s1, std::set<T>& s2)
 {
-    std::set<T> intersect;
-    std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(),
-                 std::inserter(intersect, intersect.begin())); 
-    
-    return intersect;
+    typename std::set<T>::iterator it;
+    //iterate through the set you're keeping and delete items that aren't present in the other set
+    for(it = s1.begin(); it != s1.end(); ++it) {
+        T theProduct = *it;
+        bool is_in = s2.find(theProduct) != s2.end();
+        //if the element WAS NOT found, delete it from s1
+        if (!is_in) {
+            s1.erase(theProduct);
+        }
+    }
 
+    return s1;
 
 }
+
 template <typename T>
 std::set<T> setUnion(std::set<T>& s1, std::set<T>& s2)
 {
-    std::set<T> theunion;
-    std::set_union(s1.begin(), s1.end(), s2.begin(), s2.end(),
-                 std::inserter(theunion, theunion.begin())); 
+    typename std::set<T>::iterator it;
+    //insert everything from s2 to s1 and return s1;
+    for(it = s2.begin(); it != s2.end(); ++it) {
+        T theProduct = *it;
+        s1.insert(theProduct);
+    }
     
-    return theunion;
+    return s1;
 
 }
 
