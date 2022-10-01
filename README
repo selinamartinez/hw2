@@ -1,0 +1,4 @@
+To compile the program, do 'make all'
+Then do './amazon {file you want to use}
+
+When adding an item to someone's cart, indexing of the search results begins with 0.
