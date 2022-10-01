@@ -7,6 +7,8 @@
 #include "product.h"
 #include "user.h"
 #include "product_parser.h"
+#include "mydatastore.h"
+
 
 /**
  * Interface for all section parsers_

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Product::Product(const std::string category, const std::string name, double price, int qty) :
+Product::Product(const std::string name, double price, int qty, const std::string category) :
     name_(name),
     price_(price),
     qty_(qty),

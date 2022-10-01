@@ -54,6 +54,7 @@ protected:
     std::string prodName_;
     double price_;
     int qty_;
+    std::string category_;
 
 };
 

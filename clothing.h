@@ -9,9 +9,8 @@
 
 class Clothing: public Product {
     public:
-        Clothing(std::string size, std::string brand, std::string category_, std::string name_, double price_, int qty_);
+        Clothing(std::string size, std::string brand, std::string name_, double price_, int qty_, std::string category_);
 
-        virtual ~Clothing();
 
         /**
          * Returns the appropriate keywords that this product should be associated with

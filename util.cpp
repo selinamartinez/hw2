@@ -19,16 +19,19 @@ std::set<std::string> parseStringToWords(string rawWords)
     std::string word = "";
     std::string theword = convToLower(rawWords);
     for(char l: theword) {
-        if(!ispunct(l) && ispunct(l + 1)) {
+        char next_letter = l + 1;
+        if(!ispunct(l) && ispunct(next_letter) ) {
             word = word + l;
+            ltrim(word);
+            rtrim(word);
             wordList.insert(word);
-            cout << word << endl;
             word = "";
         }
         else {
             word = word + l;
         }
     }
+    wordList.insert(word);
     return wordList;
 
 }

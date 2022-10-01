@@ -7,10 +7,6 @@
 #include <cctype>
 #include <locale>
 #include "db_parser.h"
-#include"product.h"
-#include "product_parser.h"
-#include "user.h"
-#include "datastore.h"
 #include "util.h"
 
 

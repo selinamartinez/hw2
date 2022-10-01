@@ -3,7 +3,9 @@
 #include <fstream>
 #include <set>
 #include "util.h"
+#include "user.h"
 #include "mydatastore.h"
+#include "product.h"
 #include <map>
 using namespace std;
 
@@ -17,17 +19,19 @@ MyDataStore::MyDataStore()
 *  type 0 = AND search (intersection of results for each term) while
 *  type 1 = OR search (union of results for each term)
 */
-std::vector<Product*> search(std::vector<std::string>& terms, int type) {
+ std::vector<Product*> MyDataStore:: search(std::vector<std::string>& terms, int type) {
     //take the term and look through each product seeing if theres a match..if there's a match, add the product to the new set that will be passed into setIntersection
 
     //use map instead of multiple sets..key will be the term and values will be a set of product pointers that have that term in their keywords
     std::map< std::string, std::set<Product*> > productsInTerms;
     //for each term in the search vector
     int term_count = terms.size();
+    
     for(int i =  0; i < term_count; i++) {
          //iterator for iterating through the products
         //look through every product 
-        for(std::set<Product*> ::iterator it = productSet.begin(); it != productSet.end(); ++it) 
+        std::set< Product* >::iterator it;
+        for (it = productSet.begin(); it != productSet.end(); ++it)
         {
 
             Product* theProduct = *it;
@@ -42,6 +46,7 @@ std::vector<Product*> search(std::vector<std::string>& terms, int type) {
         }
 
     }
+    
     //At this point we have a map with each term you searched for as a key and each key has a value set of product pointers (meaning these products have that term in their keywords)
     //Now we need to combine these sets based on Intersection of Union rules
 
@@ -89,6 +94,11 @@ void MyDataStore::addUser(User* u) {
     userMap[u];
 }
 
+void MyDataStore:: addtoCart(std::string username, Product* p) {
+    User* theUser = findUsername(username);
+    userMap[theUser].push_back(p);
+}
+
 /**
 * Adds a product to the data store
 */
@@ -125,12 +135,13 @@ void MyDataStore::dump(std::ostream& ofile)
     
 }
 
-User* findUsername(std::string username) 
+User* MyDataStore::findUsername(std::string username) 
 {
     //check to see if the username exists
-    for(std::map<User*, std::vector<Product*> > ::iterator it = userMap.begin(); it != userMap.end(); ++it) {
+    for(std::map<User*, std::vector<Product*>>::iterator it = userMap.begin(); it != userMap.end(); ++it) {
         User* user = it->first;
-        if (user->getName() == username) {
+        std::string name_of_user = user->getName();
+        if (name_of_user == username) {
             return user;
         }
 
@@ -142,16 +153,21 @@ void MyDataStore:: viewCart(std::string username)
 {
     //username was found in the map
     User* the_user = findUsername(username);
-    if (the_user != NULL) {
+    if (the_user != NULL) {     
         std::vector<Product*> cart = userMap[the_user];
-        int cart_size = userMap[the_user].size();
-        int item_count;
-        item_count = 1;
-        for(int i = 0; i < cart_size; i++ ) {
-            std::cout << item_count << " " << cart[i] << std::endl;
-            item_count = item_count + 1;  
+        std::map<User*, std::vector<Product*>>::iterator it;
+        it = userMap.find(the_user);
+        if (it != userMap.end())
+        {
+            std::vector<Product* >prods = it->second;
+            int prodsSize = prods.size();
+            for(int i=0; i < prodsSize; i++) {
+                Product* prod = prods[i];
+                cout << "Item: " << i + 1 << " " << prod->displayString() << std::endl;
+            }
+            
         }
-        }
+    }
     else {
         std::cout << "Invalid username" << std::endl;
     }
@@ -160,23 +176,31 @@ void MyDataStore:: viewCart(std::string username)
 void MyDataStore:: buyCart(std::string username) 
 {
     User* the_user = findUsername(username);
-        if (the_user != NULL) {
-            std::vector<Product*> cart = userMap[the_user];
-            int cart_size = userMap[the_user].size();
-            for (int i = 0; i < cart_size; i++) {
-                Product* product = cart[i];
-                double price = product->getPrice();
-                double credit = the_user->getBalance();
-                double newBalance = credit - price;
-                //they have enough money to buy the item so delete it from the cart
-                if (newBalance >= 0) {
-                    the_user->deductAmount(price);
-                    product->subtractQty(1);
-                    cart.erase(cart.begin() + i);
-                }
-                        
+    std::map<User*, std::vector<Product*>>::iterator it;
+    it = userMap.find(the_user);
+    if (it != userMap.end())
+    {
+        std::vector<Product* >prods = it->second;
+        int prodsSize = prods.size();
+        std::cout << prodsSize << std::endl;
+        User* user = it->first;
+        int i = 0;
+       for(std::vector<Product*>::iterator itr = prods.begin(); itr != prods.end(); ++itr) {
+            Product* product = *itr;
+            double price = product->getPrice();
+            double credit = user->getBalance();
+            double newBalance = credit - price;
+            std::cout << newBalance << std::endl;
+            //they have enough money to buy the item so delete it from the cart
+            if (newBalance >= 0) {
+                user->deductAmount(price);
+                product->subtractQty(1);
+                prods.erase(prods.begin() + i);
             }
+            i++;
         }
+     }
+        
         else {
             cout << "Username not found." << endl;
         }        

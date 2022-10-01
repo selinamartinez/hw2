@@ -7,23 +7,18 @@
 using namespace std;
 
 
-Book::Book(std::string author, std::string isbn, std::string category_, std::string name_, double price_, int qty_ ) : Product(category_, name_, price_, qty_),
+Book::Book(std::string author, std::string isbn, std::string name_, double price_, int qty_, std::string category_) : Product( name_, price_, qty_, category_),
     author_(author),
     isbn_(isbn)
 {
-
 }
 
-
-Book::~Book()
-{
-
-}
 
 //Returns the appropriate keywords that this product should be associated with
 std::set<std::string> Book:: keywords() const {
     set<std::string>words;
-    std::string keywords[] = { author_, isbn_, category_, name_ };
+
+    std::string keywords[4] = { author_, isbn_, name_, category_};
 
     for(int i = 0; i < 4; i++) {
         set<std::string> more_keywords;

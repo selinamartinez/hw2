@@ -7,7 +7,7 @@
 using namespace std;
 
 
-Clothing::Clothing(std::string size, std::string brand, std::string category_, std::string name_, double price_, int qty_ ) : Product(category_, name_, price_, qty_),
+Clothing::Clothing(std::string size, std::string brand, std::string name_, double price_, int qty_, std::string category_) : Product( name_, price_, qty_, category_),
     size_(size),
     brand_(brand)
 {
@@ -15,15 +15,10 @@ Clothing::Clothing(std::string size, std::string brand, std::string category_, s
 }
 
 
-Clothing::~Clothing()
-{
-
-}
-
 //Returns the appropriate keywords that this product should be associated with
 std::set<std::string> Clothing:: keywords() const {
-    set<std::string>words;
-    std::string keywords[] = { size_, brand_, category_, name_ };
+    set<std::string> words;
+    std::string keywords[] = { size_, brand_,  name_, category_};
 
     for(int i = 0; i < 4; i++) {
         set<std::string> more_keywords;

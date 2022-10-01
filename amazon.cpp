@@ -7,8 +7,8 @@
 #include <algorithm>
 #include "db_parser.h"
 #include "mydatastore.h"
+// #include "product.h"
 #include "product_parser.h"
-#include "user.h"
 #include "util.h"
 
 using namespace std;
@@ -105,11 +105,17 @@ int main(int argc, char* argv[])
                 ss >> username;
                 int hit_result_index;
                 ss >> hit_result_index;
-                User* newUser = new User(username, 0.0, 0);
-                ds.addUser(newUser);
+                if(ds.findUsername(username) == NULL) {
+                    User* newUser = new User(username, 500.0, 0);
+                    ds.addUser(newUser);
+                }
                 int hits_size = hits.size();
                 if (hit_result_index >= hits_size) {
                     std::cout << "Invalid request" << std::endl;
+                }
+                else {
+                    ds.addtoCart(username, hits[hit_result_index]);
+
                 }
             }
 	        else if ( cmd == "VIEWCART") {

@@ -9,9 +9,8 @@
 
 class Book: public Product {
     public:
-        Book(std::string author, std::string isbn, std::string category_, std::string name_, double price_, int qty_);
+        Book(std::string author, std::string isbn, std::string name, double price, int qty, std::string category);
 
-        virtual ~Book();
 
         /**
          * Returns the appropriate keywords that this product should be associated with
