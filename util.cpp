@@ -18,17 +18,17 @@ std::set<std::string> parseStringToWords(string rawWords)
     set<string> wordList;
     std::string word = "";
     std::string theword = convToLower(rawWords);
-    for(char l: theword) {
-        char next_letter = l + 1;
-        if(!ispunct(l) && ispunct(next_letter) ) {
-            word = word + l;
+    for(int i = 0; i < theword.size(); i++) {
+        char next_letter = theword[i + 1];
+        if( (theword[i] == '-'|| !ispunct(theword[i])) && (next_letter != '-' && (ispunct(next_letter) || next_letter == ' ') ) ) {
+            word = word + theword[i];
             ltrim(word);
             rtrim(word);
             wordList.insert(word);
             word = "";
         }
         else {
-            word = word + l;
+            word = word + theword[i];
         }
     }
     wordList.insert(word);

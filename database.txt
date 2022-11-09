@@ -23,9 +23,20 @@ Hidden Figures DVD
 1
 Drama
 PG
+book
+00001010 00001111
+0.11
+5
+111-000000000-1
+A. Robot
 </products>
 <users>
-aturing 100.00 0
-johnvn 50.00 1
-adal 120.00 1
+rafsilva 100.00 0
+redekopp 50.00 1
+saty 120.00 1
 </users>
+
+
+
+
+

@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 #include "book.h"
 #include <set>
 #include "util.h"
@@ -46,8 +47,11 @@ bool Book::isMatch(std::vector<std::string>&searchTerms)const
 std::string Book::displayString() const
 {
     std::string book_info;
+    //double price = ( round( price_ * 100.0 ) / 100.0 ) ;
+    char s[20];
+    sprintf(s,"%.2f",price_);
     book_info = name_ + '\n' + "Author: " + author_ + " " +
-                          "ISBN: " + isbn_ + "\n" + std::to_string(price_) + " " + std::to_string(qty_) + " left."; 
+                          "ISBN: " + isbn_ + "\n" + s + "  " + std::to_string(qty_) + " left."; 
 
     return book_info;
 }
@@ -56,7 +60,8 @@ std::string Book::displayString() const
 
 void Book::dump(std::ostream& os) const
 {
-    os << author_ << "\n" << isbn_ << "\n" << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << endl;
+    //os << author_ << "\n" << isbn_ << "\n" << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << endl;
+    os << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << "\n" << isbn_ << "\n" << author_ <<  endl;
 }
 
 

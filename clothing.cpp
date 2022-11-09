@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iomanip>
 #include "clothing.h"
+#include <cmath>
 #include <set>
 #include "util.h"
 
@@ -48,8 +49,10 @@ bool Clothing::isMatch(std::vector<std::string>&searchTerms)const
 std::string Clothing::displayString() const
 {
     std::string clothing_info;
+    char s[20];
+    sprintf(s,"%.2f",price_);
     clothing_info = name_ + "\n" + "Size: " + size_ + " " +
-                          "Brand: " + (brand_) + "\n" + std::to_string(price_) + " " + std::to_string(qty_)  + " left.";
+                          "Brand: " + (brand_) + "\n" + s + " " + std::to_string(qty_)  + " left.";
     return clothing_info;
 }
 
@@ -57,7 +60,8 @@ std::string Clothing::displayString() const
 
 void Clothing::dump(std::ostream& os) const
 {
-    os << size_ << "\n" << brand_ << "\n" << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << endl;
+    //os << size_ << "\n" << brand_ << "\n" << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << endl;
+     os << category_ << "\n"  << name_ << "\n" << price_ << "\n" << qty_ << "\n" << size_ << "\n" <<  brand_ << endl;
 }
 
 

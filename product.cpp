@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 #include "product.h"
 
 using namespace std;
@@ -20,7 +21,7 @@ Product::~Product()
 
 
 double Product::getPrice() const
-{
+{ 
     return price_;
 }
 

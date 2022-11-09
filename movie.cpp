@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 #include "movie.h"
 #include <set>
 #include "util.h"
@@ -53,8 +54,10 @@ bool Movie::isMatch(std::vector<std::string>&searchTerms)const
 std::string Movie::displayString() const
 {
     std::string movie_info;
+    char s[20];
+    sprintf(s,"%.2f",price_);
     movie_info = name_ + "\n" + "Genre: " + genre_ + " " +
-                          "Rating: " + (rating_) + "\n" + std::to_string(price_) + " " + std::to_string(qty_)  + " left.";
+                          "Rating: " + (rating_) + "\n" + s + " " + std::to_string(qty_)  + " left.";
     return movie_info;
 }
 
@@ -62,7 +65,8 @@ std::string Movie::displayString() const
 
 void Movie::dump(std::ostream& os) const
 {
-    os << genre_ << "\n" << rating_ << "\n" << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << endl;
+    //os << genre_ << "\n" << rating_ << "\n" << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << endl;
+    os << category_ << "\n" << name_ << "\n" << price_ << "\n" << qty_ << "\n" << genre_ << "\n" <<  rating_ << endl;
 }
 
 

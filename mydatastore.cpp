@@ -5,8 +5,10 @@
 #include "util.h"
 #include "user.h"
 #include "mydatastore.h"
+#include <cmath>
 #include "product.h"
 #include <map>
+
 using namespace std;
 
 MyDataStore::MyDataStore()
@@ -33,7 +35,6 @@ MyDataStore::MyDataStore()
         std::set< Product* >::iterator it;
         for (it = productSet.begin(); it != productSet.end(); ++it)
         {
-
             Product* theProduct = *it;
             //get all the keywords in that product
             std::set<std::string> allTerms = theProduct->keywords();
@@ -163,7 +164,9 @@ void MyDataStore:: viewCart(std::string username)
             int prodsSize = prods.size();
             for(int i=0; i < prodsSize; i++) {
                 Product* prod = prods[i];
-                cout << "Item: " << i + 1 << " " << prod->displayString() << std::endl;
+                cout << "Item " << i + 1 << endl;
+                cout << prod->displayString() << std::endl;
+                cout << endl;
             }
             
         }
@@ -180,29 +183,46 @@ void MyDataStore:: buyCart(std::string username)
     it = userMap.find(the_user);
     if (it != userMap.end())
     {
-        std::vector<Product* >prods = it->second;
-        int prodsSize = prods.size();
-        std::cout << prodsSize << std::endl;
+        std::vector<Product*>prods = it->second;
+        //int prodsSize = prods.size();
         User* user = it->first;
-        int i = 0;
-       for(std::vector<Product*>::iterator itr = prods.begin(); itr != prods.end(); ++itr) {
+        //int i = 0;
+       //vector<Product*> items_to_delete;
+     vector< Product* >::iterator itr = prods.begin();
+     while(itr != prods.end()) { 
             Product* product = *itr;
             double price = product->getPrice();
+            float theprice = floor(price * 100.0) / 100.0;
             double credit = user->getBalance();
-            double newBalance = credit - price;
-            std::cout << newBalance << std::endl;
+            float thecredit = floor(credit * 100.0) / 100.0;
+            float newBalance = thecredit - theprice;
             //they have enough money to buy the item so delete it from the cart
             if (newBalance >= 0) {
                 user->deductAmount(price);
                 product->subtractQty(1);
-                prods.erase(prods.begin() + i);
+                //prods.erase(itr);
+                itr = prods.erase(itr);
             }
-            i++;
+            else {
+              //put back the money into their balance
+                newBalance = thecredit + theprice;
+                ++itr;
+            }      
+            it->second = prods;
+            //i++;
         }
-     }
-        
-        else {
-            cout << "Username not found." << endl;
-        }        
+    }
+    else {
+        cout << "Username not found." << endl;
+    }        
 
 }
+
+/*
+          for (auto p : items_to_delete)
+            {
+                delete p
+            } 
+                items_to_delete.clear();
+     }
+     */

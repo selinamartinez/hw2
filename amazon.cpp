@@ -110,11 +110,11 @@ int main(int argc, char* argv[])
                     ds.addUser(newUser);
                 }
                 int hits_size = hits.size();
-                if (hit_result_index >= hits_size) {
+                if (hit_result_index > hits_size) {
                     std::cout << "Invalid request" << std::endl;
                 }
                 else {
-                    ds.addtoCart(username, hits[hit_result_index]);
+                    ds.addtoCart(username, hits[hit_result_index - 1]);
 
                 }
             }
